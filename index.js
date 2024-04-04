@@ -6,7 +6,7 @@ const dotenv = require('dotenv').config();
 const PORT = process.env.PORT;
 
 app.get('/', (req, res) => {
-    res.status(200).send({message: 'Welcome to the API of Jethro Code'});
+    res.status(200).send({message: 'Welcome to the API of Kadea Academy'});
 })
 
 
