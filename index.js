@@ -10,6 +10,7 @@ const LocalStrategy = require('passport-local').Strategy;
 
 
 const loginRouter = require('./routes/login');
+const registerRoute = require('./routes/register');
 const  app = express();
 
 //Import Dotenv
@@ -63,7 +64,9 @@ app.get('/', (req, res) => {
 })
 
 
-app.use('/login', loginRouter)
+app.use('/login', loginRouter);
+
+app.use('/register', registerRoute);
 
 
 
