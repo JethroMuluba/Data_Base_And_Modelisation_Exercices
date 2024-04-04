@@ -91,3 +91,10 @@ model Session {
 
     cohortes Cohorte[]
 }
+
+//Creat Users
+model User {
+    id Int @id @default(autoincrement())
+    email String @unique
+    password String @unique
+}

@@ -16,8 +16,8 @@ const userLogin = (rep, res, next) => {
             {id: user.id, role: user.role},
             process.env.JWT_SECRET,
             {expiresIn: Date.now + 3 * 60 * 1000},
-
         );
+        // Sending back the token and id of authenticated user
         res.status(200).json(token);
     }) (req, res, next);
 }
