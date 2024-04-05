@@ -5,6 +5,10 @@ const session = require('express-session')
 const LocalStrategy = require('passport-local').Strategy;
 const prisma = require('./db/prisma');
 const bcrypt = require('bcrypt')
+const jwt = require('jsonwebtoken');
+const userRegister = require('./controllers/register');
+
+
 //Import Dotenv
 const dotenv = require('dotenv').config();
 const PORT = process.env.PORT;
@@ -41,10 +45,11 @@ passport.use(new LocalStrategy(
                 return done(null, user);
             } else {
                 return done(null, false, { message: 'Mot de passe incorrect' });
-            }
+            } 
         } catch (err) {
             return done(err);
         }
+
     }
 ));
 
@@ -68,7 +73,7 @@ passport.deserializeUser(async (id, done) => {
 app.post('/login', passport.authenticate('local', {
     successRedirect: '/dashboar',
     failureRedirect: '/login',
-    failureFlash: true
+    failureFlash: true,
 }));
 
 app.post('/logout', (req, res) => {
@@ -88,28 +93,10 @@ app.post('/logout', (req, res) => {
 
 
 //Genere and Check Json  Web Token
-const jwt = require('jsonwebtoken');
-const userRegister = require('./controllers/register');
-
 const generateToken = (user) => {
     return jwt.sign({ id: user.id, email: user.email }, process.env.SESSION_SECRET, { expiresIn: '1h' });
 };
 
-const verifyToken = (req, res, next) => {
-    const token = req.headers.authorization;
-    if (!token) {
-        return res.status(401).json({ message: 'Token non fourni' });
-    }
-
-    jwt.verify(token, process.env.SESSION_SECRET, (err, decoded) => {
-        if (err) {
-            return res.status(401).json({ message: 'Token invalide' });
-        }
-
-        req.user = decoded;
-        next();
-    });
-};
 
 
 
