@@ -18,7 +18,7 @@ const userLogin = (req, res, next) => {
             {expiresIn: "1d"},
         );
         // Sending back the token and id of authenticated user
-        res.status(200).json(token);
+        res.status(300).redirect('/');
     }) (req, res, next);
 }
 
