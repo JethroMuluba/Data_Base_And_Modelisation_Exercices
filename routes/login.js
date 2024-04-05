@@ -1,10 +1,10 @@
-const express = require('express');
-const userLogin = require('../middleware/login');
+// const express = require('express');
+// const userLogin = require('../middleware/login');
 
-const loginRouter = express.Router();
-
-
-loginRouter.post('/', userLogin);
+// const loginRouter = express.Router();
 
 
-module.exports = loginRouter;  
+// loginRouter.post('/', userLogin);
+
+
+// module.exports = loginRouter;  
