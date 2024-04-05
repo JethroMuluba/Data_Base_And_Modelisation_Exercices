@@ -23,7 +23,7 @@ const configPassport = new LocalStrategy(
     usernameField: "email",
     passwordField: "password"
     }, async (email, password, done) => {
-        const user = await prisma.apprenant.findFirst({
+        const user = await prisma.user.findUnique({
             where : {email}
         });
         if (!user) {
@@ -35,8 +35,10 @@ const configPassport = new LocalStrategy(
                 return done(error);
             }
             if ( !isMatch ) {
-                return done(null, user)
+                return done( null, false, {message: 'Password Not Correct'})
+                
             }
+            return done(null, user)
         })
     }
 );
