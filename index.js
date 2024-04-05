@@ -5,6 +5,7 @@ const  app = express();
 const loginRouter = require('./routes/login');
 const registerRoute = require('./routes/register');
 const configPassport = require('./controllers/login');
+const logoutRouter = require('./routes/logout');
 
 //Import Dotenv
 const dotenv = require('dotenv').config();
@@ -25,6 +26,8 @@ app.get('/', (req, res) => {
 })
 
 app.use('/login', loginRouter);
+
+app.use('/logout', logoutRouter);
 
 app.use('/register', registerRoute);
 
