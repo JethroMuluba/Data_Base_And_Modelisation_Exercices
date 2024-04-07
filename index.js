@@ -7,6 +7,8 @@ const prisma = require('./db/prisma');
 const bcrypt = require('bcrypt')
 const jwt = require('jsonwebtoken');
 const userRegister = require('./controllers/register');
+const generateToken = require('./middleware/token');
+const logoutRouter = require('./routes/logout');
 
 
 //Import Dotenv
@@ -26,7 +28,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(express.json())
 
-//Config ure Passport local strategy
+//Config Passport local strategy
 passport.use(new LocalStrategy(
     { usernameField: 'email', passwordField:'password' },
     async (email, password, done) => {
@@ -74,30 +76,10 @@ app.post('/login', passport.authenticate('local', {
     successRedirect: '/dashboar',
     failureRedirect: '/login',
     failureFlash: true,
-}));
+}), generateToken
+);
 
-app.post('/logout', (req, res) => {
-    req.logout((err) => {
-        if (err) {
-            console.error('Erreur lors de la déconnexion :', err);
-            return res.redirect('/');
-        }
-        req.session.destroy((err) => {
-            if (err) {
-                console.error('Erreur lors de la destruction de la session :', err);
-            }
-            res.redirect('/');
-        });
-    });
-});
-
-
-//Genere and Check Json  Web Token
-const generateToken = (user) => {
-    return jwt.sign({ id: user.id, email: user.email }, process.env.SESSION_SECRET, { expiresIn: '1h' });
-};
-
-
+app.post('/logout', logoutRouter);
 
 
 app.get('/', (req, res) => {
